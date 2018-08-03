@@ -1,8 +1,40 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+//@flow
+import * as React from "react";
+import logo from "./logo.svg";
+import "./App.css";
 
-class App extends Component {
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
+
+const EXCHANGE_RATES = gql`
+  query CurrencyRates {
+    rates(currency: "USD") {
+      currency
+      rate
+    }
+  }
+`;
+
+const ExchangeRates = () => (
+  <Query query={EXCHANGE_RATES}>
+    {({ loading, error, data }) => {
+      if (loading) return <p>Loading...</p>;
+      if (error) return <p>Error :(</p>;
+
+      return (
+        data &&
+        data.rates &&
+        data.rates.map(({ currency, rate }) => (
+          <div key={currency}>
+            <p>{`${currency}: ${rate}`}</p>
+          </div>
+        ))
+      );
+    }}
+  </Query>
+);
+
+class App extends React.Component<{}, { toggle: boolean }> {
   state = { toggle: true };
   toggleToggle = () => this.setState({ toggle: !this.state.toggle });
   render() {
@@ -10,13 +42,14 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
+          <ExchangeRates />
           <h1>
             This app is built with <br />React ⚛️ + Parcel 📦!
           </h1>
           <img
             src={logo}
             onClick={this.toggleToggle}
-            className={'App-logo ' + (toggle && 'Logo-spin')}
+            className={`App-logo ${toggle ? "Logo-spin" : ""}`}
             alt="logo"
           />
           <p>

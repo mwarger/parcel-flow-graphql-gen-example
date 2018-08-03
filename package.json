@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "react": "^16.4.1",
+    "apollo-boost": "^0.1.12",
+    "apollo-client": "^2.2.3",
+    "react": "0.14.x || 15.* || ^15.0.0 || ^16.0.0",
+    "react-apollo": "^2.1.9",
     "react-dom": "^16.4.1",
     "react-scripts-parcel": "0.0.24"
   },
@@ -11,7 +14,10 @@
     "start": "react-scripts-parcel start",
     "build": "react-scripts-parcel build",
     "test": "react-scripts-parcel test --env=jsdom",
-    "eject": "react-scripts-parcel eject"
+    "eject": "react-scripts-parcel eject",
+    "flow": "flow",
+    "generate-types": "apollo codegen:generate graphql-types --addTypename --queries=src/**/*.js --schema=./schema.json --target=flow",
+    "download-schema": "apollo schema:download --endpoint=https://w5xlvm3vzz.lp.gql.zone/graphql"
   },
   "browserslist": {
     "development": [
@@ -25,5 +31,9 @@
       "Firefox ESR",
       "not ie < 11"
     ]
+  },
+  "devDependencies": {
+    "apollo": "^1.6.0",
+    "flow-bin": "^0.77.0"
   }
 }
